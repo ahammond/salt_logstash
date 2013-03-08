@@ -5,7 +5,7 @@ logstash:
     - file: /etc/apt/sources.list.d/logstash.list
     - keyid: 28B04E4A
     - keyserver: keyserver.ubuntu.com
-  pkg.installed:
+  pkg.latest:
     - require:
       - pkgrepo: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
   user.present:
