@@ -16,6 +16,25 @@ logstash:
     - password: '*'
   group.present:
     - system: True
+  file.managed:
+    - name: /etc/logstash/conf.d/syslog.conf:
+    - source: salt://logstash/logstash_syslog.conf
+    - user: root
+    - group: adm
+    - mode: 640
+    - template: jinja
+    - require:
+      - pkg: logstash
+  service.running:
+    - enable: True
+    - reload: True
+    - watch:
+      - file: /etc/logstash/conf.d/*
+      - pkg: logstash
+
+
+
+
 
 #apply standard configs?
 #restart shipper if configs change
