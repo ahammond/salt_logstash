@@ -5,6 +5,8 @@ logstash:
     - file: /etc/apt/sources.list.d/logstash.list
     - keyid: 28B04E4A
     - keyserver: keyserver.ubuntu.com
+    - require_in:
+      - pkg: logstash
   pkg.latest:
     - refresh: True
     - require:
