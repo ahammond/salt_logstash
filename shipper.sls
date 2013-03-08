@@ -20,6 +20,8 @@ logstash:
     - home: /srv/logstash
     - shell: /usr/sbin/nologin
     - password: '*'
+  group.present:
+    - system: True
 
 #apply standard configs?
 #restart shipper if configs change
