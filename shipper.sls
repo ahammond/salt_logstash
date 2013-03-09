@@ -17,7 +17,7 @@ logstash:
   group.present:
     - system: True
   file.managed:
-    - name: /etc/logstash/conf.d/syslog.conf:
+    - name: /etc/logstash/conf.d/syslog.conf
     - source: salt://logstash/logstash_syslog.conf
     - user: root
     - group: adm
