@@ -1,0 +1,24 @@
+$ModLoad imfile   # Load the imfile input module
+$ModLoad imklog   # for reading kernel log messages
+$ModLoad imuxsock # for reading local syslog messages
+
+{# We can get rsyslog to monitor text files on the box. #}
+{# Even if they're not being sent through syslog. #}
+{# http://www.rsyslog.com/doc/imfile.html #}
+{# NOTE: This is stupid. Fix stuff to instead log through syslog. #}
+
+{%  for filename, args in pillar['rsyslog'].iteritems() %}
+$InputFileName {{  filename }}
+{%  if 'tag' in args %}
+$InputFileTag {{ args['tag'] }}:
+{% endif %}
+{# This filename must be unique for the box or "interesting" things may happen. #}
+{# So... this is pretty fragile, but... it's a start. #}
+{# Can we instead use an re to handle all kinds of clever characters? #}
+$InputFileStateFile state-ls{{ filename.replace('/', '-') }}
+$InputRunFileMonitor
+{%  endfor %}
+
+# Send everything to a logstash server named 'lsshipper01' on port 5544:
+{# This should obviously be dynamic... but. Let's get started with lsshipper01 #}
+*.* @@lsshipper01:5544
