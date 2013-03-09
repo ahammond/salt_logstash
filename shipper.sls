@@ -1,4 +1,7 @@
 logstash:
+  pkg.latest:
+    - name: openjdk-7-jre
+    - refresh: True
   pkgrepo.managed:
     - name: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
     - dist: precise
@@ -11,6 +14,7 @@ logstash:
     - refresh: True
     - require:
       - pkgrepo: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
+      - pkg: openjdk-7-jre
   user.present:
     - system: True
     - home: /srv/logstash
