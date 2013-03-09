@@ -1,4 +1,4 @@
-rsyslog
+rsyslog:
   service.running:
     - enable: True
     - reload: True
