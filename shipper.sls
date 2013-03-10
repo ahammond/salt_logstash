@@ -38,6 +38,3 @@ logstash:
     - watch:
       - file: /etc/logstash/conf.d/*
       - pkg: logstash
-
-#apply standard configs?
-#restart shipper if configs change
