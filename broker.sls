@@ -25,7 +25,7 @@ redis-server:
     - require:
       - pkg: redis-server
       - sysctl: vm.overcommit_memory
-    -watch:
+    - watch:
       - file: /etc/redis.conf
 
 vm.overcommit_memory:
