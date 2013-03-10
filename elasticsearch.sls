@@ -16,7 +16,7 @@ elasticsearch:
   pkg.latest:
     - refresh: True
     - require:
-      - pkgrepo: deb http://ppa.launchpad.net/eslam-husseiny/elasticsearch/ubuntu precise main
+      - pkgrepo: logstash
       - pkg: openjdk-7-jre
   user.present:
     - system: True
