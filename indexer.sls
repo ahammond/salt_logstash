@@ -1,5 +1,5 @@
 include:
-  - logstash.logtash
+  - logstash.logstash
 
 extend:
   logstash:
