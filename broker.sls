@@ -10,7 +10,7 @@ redis-server:
   pkg.latest:
     - refresh: True
     - require:
-      - pkgrepo: redis-server
+      - pkgrepo: deb http://ppa.launchpad.net/rwky/redis/ubuntu precise main
 {#  file.managed:#}
 {#    - name: /etc/redis.conf#}
 {#    - source: salt://logstash/redis.conf.jinja#}
