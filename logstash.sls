@@ -14,7 +14,7 @@ logstash:
   pkg.latest:
     - refresh: True
     - require:
-      - pkgrepo: logstash
+      - pkgrepo: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
       - pkg: openjdk-7-jre
   user.present:
     - system: True
