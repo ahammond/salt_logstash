@@ -17,6 +17,8 @@ redis-server:
       - bind: 0.0.0.0
       - port: 6379
       - maxmemory: 0
+    - require:
+      - pkg: redis-server
   service.running:
     - enable: True
     - reload: True
