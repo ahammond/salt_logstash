@@ -9,6 +9,8 @@ redis-server:
       - pkg: redis-server
   pkg.latest:
     - refresh: True
+    - require:
+      - pkgrepo: redis-server
 {#  file.managed:#}
 {#    - name: /etc/redis.conf#}
 {#    - source: salt://logstash/redis.conf.jinja#}
