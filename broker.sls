@@ -9,11 +9,24 @@ redis-server:
       - pkg: redis-server
   pkg.latest:
     - refresh: True
-  service.runing:
+  file.managed:
+    - name: /etc/redis.conf
+    - source: salt://logstash/redis.conf.jinja
+    - template: jinja
+    - default:
+      - bind: 0.0.0.0
+      - port: 6379
+      - maxmemory: -1
+  service.running:
     - enable: True
     - reload: True
     - require:
       - pkg: redis-server
+      - sysctl: vm.overcommit_memory
+    -watch:
+      - file: /etc/redis.conf
 
-
-
+vm.overcommit_memory:
+  sysctl.present:
+    - value: 1
+    - config: /etc/sysctl.d/10-redis.conf
