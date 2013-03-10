@@ -13,7 +13,7 @@ redis-server:
     - name: /etc/redis.conf
     - source: salt://logstash/redis.conf.jinja
     - template: jinja
-    - default:
+    - defaults:
       - bind: 0.0.0.0
       - port: 6379
       - maxmemory: 0
