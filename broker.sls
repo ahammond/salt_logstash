@@ -16,7 +16,7 @@ redis-server:
     - default:
       - bind: 0.0.0.0
       - port: 6379
-      - maxmemory: -1
+      - maxmemory: 0
   service.running:
     - enable: True
     - reload: True
