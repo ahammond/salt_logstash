@@ -29,5 +29,4 @@ elasticsearch:
     - enable: True
     - reload: True
     - watch:
-      - file: /etc/logstash/conf.d/*
       - pkg: logstash
