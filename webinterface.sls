@@ -1,14 +1,7 @@
-include:
-  - logstash.logstash
+# So... we want Kibana, because it's "AWESOME" as opposed to just pretty good.
 
-extend:
-  logstash:
-    file.managed:
-      - name: /etc/logstash/conf.d/webinterface.conf
-      - source: salt://logstash/logstash_webinterface.conf.jinja
-      - user: root
-      - group: adm
-      - mode: 640
-      - template: jinja
-      - require:
-        - pkg: logstash
+git://github.com/rashidkpc/Kibana.git:
+  git.latest:
+    - rev: v0.2.0
+    - target: /srv/kibana
+    - submodules: True
