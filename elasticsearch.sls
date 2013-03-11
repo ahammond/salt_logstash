@@ -25,4 +25,4 @@ elasticsearch:
     - enable: True
     - reload: True
     - watch:
-      - pkg: logstash
+      - pkg: elasticsearch
