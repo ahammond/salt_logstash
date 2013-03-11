@@ -4,8 +4,8 @@ include:
 extend:
   logstash:
     file.managed:
-      - name: /etc/logstash/conf.d/web.conf
-      - source: salt://logstash/logstash_web.conf.jinja
+      - name: /etc/logstash/conf.d/webinterface.conf
+      - source: salt://logstash/logstash_webinterface.conf.jinja
       - user: root
       - group: adm
       - mode: 640
