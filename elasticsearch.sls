@@ -9,18 +9,8 @@ elasticsearch:
     - refresh: True
     - require:
       - pkg: openjdk-7-jre
-  user.present:
-    - system: True
-    - home: /srv/elasticsearch
-    - shell: /usr/sbin/nologin
-    - password: '*'
-  group.present:
-    - system: True
   service.running:
     - enable: True
     - reload: True
-    - require:
-      - user: elasticsearch
-      - group: elasticsearch
     - watch:
       - pkg: elasticsearch
