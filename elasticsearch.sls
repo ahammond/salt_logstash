@@ -2,6 +2,13 @@ openjdk-7-jre:
   pkg.latest:
     - refresh: True
 
+# PPA deb does not create /etc/elasticsearch, but depends on it.
+/etc/elasticsearch
+  file.directory:
+    - user: root
+    - group: root
+    - dir_mode: 755
+
 # NB: the PPA supplies 0.19.2 and Logstash recommends using 0.20.2.
 # I've asked the PPA maintainer to update.
 elasticsearch:
@@ -18,6 +25,7 @@ elasticsearch:
     - require:
       - pkgrepo: deb http://ppa.launchpad.net/eslam-husseiny/elasticsearch/ubuntu precise main
       - pkg: openjdk-7-jre
+      - file: /etc/elasticsearch
   user.present:
     - system: True
     - home: /srv/elasticsearch
