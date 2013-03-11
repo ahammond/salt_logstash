@@ -5,7 +5,7 @@ extend:
   logstash:
     file.managed:
       - name: /etc/logstash/conf.d/syslog.conf
-      - source: salt://logstash/logstash_syslog.conf.jinja
+      - source: salt://logstash/logstash_shipper.conf.jinja
       - user: root
       - group: adm
       - mode: 640
