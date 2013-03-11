@@ -11,4 +11,4 @@ extend:
       - mode: 640
       - template: jinja
       - require:
-      - pkg: logstash
+        - pkg: logstash
