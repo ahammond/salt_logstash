@@ -2,11 +2,6 @@ openjdk-7-jre:
   pkg.latest:
     - refresh: True
 
-# NB: the PPA supplies 0.19.2 and Logstash recommends using 0.20.2.
-# I've asked the PPA maintainer to update.
-# In related news, the package in that PPA is completely and totally broken.
-# Instead, let's download it from the interwebs.
-# https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.5.deb
 elasticsearch:
   pkg.installed:
     - sources:
@@ -24,5 +19,8 @@ elasticsearch:
   service.running:
     - enable: True
     - reload: True
+    - require:
+      - user: elasticsearch
+      - group: elasticsearch
     - watch:
       - pkg: elasticsearch
