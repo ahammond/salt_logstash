@@ -10,7 +10,7 @@ openjdk-7-jre:
 elasticsearch:
   pkg.installed:
     - sources:
-      - foo: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.5.deb
+      - elasticsearch: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.5.deb
     - refresh: True
     - require:
       - pkg: openjdk-7-jre
