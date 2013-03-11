@@ -3,7 +3,7 @@ openjdk-7-jre:
     - refresh: True
 
 # PPA deb does not create /etc/elasticsearch, but depends on it.
-/etc/elasticsearch
+/etc/elasticsearch:
   file.directory:
     - user: root
     - group: root
