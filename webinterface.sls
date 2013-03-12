@@ -70,7 +70,7 @@ mri-deps:
       - user: rvm
     - unless: test -x /usr/local/rvm/bin/rvm
 
-rvm 1.9.3@kibana --install --create:
+/usr/local/rvm/bin/rvm 1.9.3@kibana --install --create:
   cmd.run:
     - cwd: /srv
     - runas: rvm
@@ -83,7 +83,7 @@ rvm 1.9.3@kibana --install --create:
     - cwd: /srv/kibana
     - runas: rvm
     - require:
-      - cmd: rvm 1.9.3@kibana --install --create
+      - cmd: /usr/local/rvm/bin/rvm 1.9.3@kibana --install --create
       - git: https://github.com/rashidkpc/Kibana.git
 
 /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/bundle install:
