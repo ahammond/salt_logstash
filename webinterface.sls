@@ -70,21 +70,21 @@ mri-deps:
       - user: rvm
     - unless: test -x /usr/local/rvm/bin/rvm
 
-/usr/local/rvm/rubies/ruby-1.9.3/bin/gem install bundler:
+/usr/local/rvm/rubies/default/bin/gem install bundler:
   cmd.run:
     - cwd: /srv/kibana
     - runas: rvm
     - require:
       - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
       - git: https://github.com/rashidkpc/Kibana.git
-    - unless: test -x /usr/local/rvm/rubies/ruby-1.9.3/bin/bundler
+    - unless: test -x /usr/local/rvm/rubies/default/bin/gem
 
-/usr/local/rvm/rubies/ruby-1.9.3/bin/bundle install:
+/usr/local/rvm/rubies/default/bin/bundler install:
   cmd.run:
     - cwd: /srv/kibana
     - runas: rvm
     - require:
-      - cmd: /usr/local/rvm/rubies/ruby-1.9.3/bin/gem install bundler
+      - cmd: /usr/local/rvm/rubies/ruby-1.9.3-p392/bin/gem install bundler
 
 # edit KibanaConfig.rb to find Elasticsearch
 
