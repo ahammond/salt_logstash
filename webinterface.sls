@@ -71,16 +71,15 @@ https://github.com/rashidkpc/Kibana.git:
 {#      - subversion#}
 {#      - ruby#}
 {##}
-{#\curl -#L https://get.rvm.io | bash -s stable --ruby:#}
-{#  cmd.run:#}
-{#    - cwd: /srv#}
-{#    - runas: rvm#}
-{#    - require:#}
+
+ruby-2.0.0:
+  rvm.installed:
+    - runas: rvm
+    - require:
 {#      - pkg: rvm-deps#}
 {#      - pkg: mri-deps#}
-{#      - user: rvm#}
-{#    - unless: test -x /usr/local/rvm/bin/rvm#}
-{##}
+      - user: rvm
+
 {#/usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler:#}
 {#  cmd.run:#}
 {#    - runas: rvm#}
