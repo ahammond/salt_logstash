@@ -7,6 +7,7 @@ git:
 https://github.com/rashidkpc/Kibana.git:
   git.latest:
     - rev: v0.2.0
+    - runas: rvm
     - target: /srv/kibana
     - require:
       - pkg: git
@@ -20,71 +21,79 @@ rvm:
     - require:
       - group: rvm
 
-rvm-deps:
-  pkg.installed:
-    - names:
-      - bash
-      - coreutils
-      - gzip
-      - bzip2
-      - gawk
-      - sed
-      - curl
-      - git-core
-      - subversion
+{#rvm-deps:#}
+{#  pkg.installed:#}
+{#    - names:#}
+{#      - bash#}
+{#      - coreutils#}
+{#      - gzip#}
+{#      - bzip2#}
+{#      - gawk#}
+{#      - sed#}
+{#      - curl#}
+{#      - git-core#}
+{#      - subversion#}
+{##}
+{#mri-deps:#}
+{#  pkg.installed:#}
+{#    - names:#}
+{#      - build-essential#}
+{#      - openssl#}
+{#      - libreadline6#}
+{#      - libreadline6-dev#}
+{#      - curl#}
+{#      - git-core#}
+{#      - zlib1g#}
+{#      - zlib1g-dev#}
+{#      - libssl-dev#}
+{#      - libyaml-dev#}
+{#      - libsqlite3-0#}
+{#      - libsqlite3-dev#}
+{#      - sqlite3#}
+{#      - libxml2-dev#}
+{#      - libxslt1-dev#}
+{#      - autoconf#}
+{#      - libc6-dev#}
+{#      - libncurses5-dev#}
+{#      - automake#}
+{#      - libtool#}
+{#      - bison#}
+{#      - subversion#}
+{#      - ruby#}
+{##}
+{#\curl -#L https://get.rvm.io | bash -s stable --ruby:#}
+{#  cmd.run:#}
+{#    - cwd: /srv#}
+{#    - runas: rvm#}
+{#    - require:#}
+{#      - pkg: rvm-deps#}
+{#      - pkg: mri-deps#}
+{#      - user: rvm#}
+{#    - unless: test -x /usr/local/rvm/bin/rvm#}
+{##}
+{#/usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler:#}
+{#  cmd.run:#}
+{#    - runas: rvm#}
+{#    - require:#}
+{#      - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby#}
+{#    - unless: test -x /usr/local/rvm/rubies/default/bin/gem#}
+{##}
+{#/usr/local/rvm/rubies/default/bin/bundler install:#}
+{#  cmd.run:#}
+{#    - cwd: /srv/kibana#}
+{#    - runas: rvm#}
+{#    - require:#}
+{#      - git: https://github.com/rashidkpc/Kibana.git#}
+{#      - cmd: /usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler:#}
 
-mri-deps:
-  pkg.installed:
-    - names:
-      - build-essential
-      - openssl
-      - libreadline6
-      - libreadline6-dev
-      - curl
-      - git-core
-      - zlib1g
-      - zlib1g-dev
-      - libssl-dev
-      - libyaml-dev
-      - libsqlite3-0
-      - libsqlite3-dev
-      - sqlite3
-      - libxml2-dev
-      - libxslt1-dev
-      - autoconf
-      - libc6-dev
-      - libncurses5-dev
-      - automake
-      - libtool
-      - bison
-      - subversion
-      - ruby
-
-\curl -#L https://get.rvm.io | bash -s stable --ruby:
-  cmd.run:
-    - cwd: /srv
-    - runas: rvm
+kibana:
+  group.present:
+    - system: True
+  user.present:
+    - gid: kibana
+    - system: True
     - require:
-      - pkg: rvm-deps
-      - pkg: mri-deps
-      - user: rvm
-    - unless: test -x /usr/local/rvm/bin/rvm
-
-/usr/local/rvm/rubies/default/bin/gem install bundler:
-  cmd.run:
-    - cwd: /srv/kibana
-    - runas: rvm
-    - require:
-      - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
-      - git: https://github.com/rashidkpc/Kibana.git
-    - unless: test -x /usr/local/rvm/rubies/default/bin/gem
-
-/usr/local/rvm/rubies/default/bin/bundler install:
-  cmd.run:
-    - cwd: /srv/kibana
-    - runas: rvm
-    - require:
-      - cmd: /usr/local/rvm/rubies/ruby-1.9.3-p392/bin/gem install bundler
+      - group: kibana
 
 # edit KibanaConfig.rb to find Elasticsearch
 
