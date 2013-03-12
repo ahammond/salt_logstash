@@ -4,14 +4,6 @@ git:
   pkg:
     - installed
 
-https://github.com/rashidkpc/Kibana.git:
-  git.latest:
-    - rev: v0.2.0
-    - runas: rvm
-    - target: /srv/kibana
-    - require:
-      - pkg: git
-
 rvm:
   group:
     - present
@@ -20,6 +12,24 @@ rvm:
     - home: /home/rvm
     - require:
       - group: rvm
+
+/srv:
+  file.directory:
+    - user: root
+    - group: rvm
+    - mode: 775
+    - require:
+      - group: rvm
+
+https://github.com/rashidkpc/Kibana.git:
+  git.latest:
+    - rev: v0.2.0
+    - runas: rvm
+    - target: /srv/kibana
+    - require:
+      - file: /srv
+      - pkg: git
+      - user: rvm
 
 {#rvm-deps:#}
 {#  pkg.installed:#}
