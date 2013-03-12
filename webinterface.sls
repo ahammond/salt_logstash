@@ -31,6 +31,7 @@ https://github.com/rashidkpc/Kibana.git:
       - pkg: git
       - user: rvm
 
+{# Commented out for performance / visibility during development. #}
 {#rvm-deps:#}
 {#  pkg.installed:#}
 {#    - names:#}
@@ -80,13 +81,15 @@ ruby-2.0.0:
 {#      - pkg: mri-deps#}
       - user: rvm
 
-{#/usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler:#}
-{#  cmd.run:#}
-{#    - runas: rvm#}
-{#    - require:#}
-{#      - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby#}
+# install bundler into ruby-2.0.0
+rvm ruby-2.0.0 do gem install bundler:
+  cmd.run:
+    - runas: rvm
+    - require:
+      - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
 {#    - unless: test -x /usr/local/rvm/rubies/default/bin/gem#}
-{##}
+# I don't yet have a good way of detecting if bundler has been installed.
+
 {#/usr/local/rvm/rubies/default/bin/bundler install:#}
 {#  cmd.run:#}
 {#    - cwd: /srv/kibana#}
