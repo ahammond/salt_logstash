@@ -60,27 +60,38 @@ mri-deps:
       - subversion
       - ruby
 
-ruby-1.9.3@kibana:
-  rvm.installed:
-    - default: True
+install_rvm:
+  cmd.run:
+    - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
+    - cwd: /srv
     - runas: rvm
     - require:
       - pkg: rvm-deps
       - pkg: mri-deps
       - user: rvm
+    - unless: test -x /usr/local/rvm/bin/rvm
+
+kibana_rvm:
+  cmd.run:
+    - cmd: rvm 1.9.3@kibana --install --create
+    - cwd: /srv
+    - runas: rvm
+    - require:
+      - cmd: install_rvm
+    - unless: test -x /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/ruby
 
 gem_install_bundler:
   cmd.run:
-    - cmd: gem install bundler
+    - cmd: /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/gem install bundler
     - cwd: /srv/kibana
     - runas: rvm
     - require:
-      - rmv: ruby-1.9.3@kibana
+      - cmd: kibana_rvm
       - git: https://github.com/rashidkpc/Kibana.git
 
 bundle_install:
   cmd.run:
-    - cmd: bundle install
+    - cmd: /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/bundle install
     - cwd: /srv/kibana
     - runas: rvm
     - require:
