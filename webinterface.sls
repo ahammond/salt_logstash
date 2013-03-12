@@ -81,8 +81,7 @@ ruby-2.0.0:
 {#      - pkg: mri-deps#}
       - user: rvm
 
-# install bundler into ruby-2.0.0
-rvm ruby-2.0.0 do gem install bundler:
+/usr/local/rvm/bin/rvm ruby-2.0.0 do gem install bundler:
   cmd.run:
     - runas: rvm
     - require:
