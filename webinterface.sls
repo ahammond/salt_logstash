@@ -60,9 +60,8 @@ mri-deps:
       - subversion
       - ruby
 
-install_rvm:
+\curl -#L https://get.rvm.io | bash -s stable --ruby:
   cmd.run:
-    - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
     - cwd: /srv
     - runas: rvm
     - require:
@@ -71,31 +70,28 @@ install_rvm:
       - user: rvm
     - unless: test -x /usr/local/rvm/bin/rvm
 
-kibana_rvm:
+rvm 1.9.3@kibana --install --create:
   cmd.run:
-    - cmd: rvm 1.9.3@kibana --install --create
     - cwd: /srv
     - runas: rvm
     - require:
-      - cmd: install_rvm
+      - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
     - unless: test -x /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/ruby
 
-gem_install_bundler:
+/usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/gem install bundler:
   cmd.run:
-    - cmd: /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/gem install bundler
     - cwd: /srv/kibana
     - runas: rvm
     - require:
-      - cmd: kibana_rvm
+      - cmd: rvm 1.9.3@kibana --install --create
       - git: https://github.com/rashidkpc/Kibana.git
 
-bundle_install:
+/usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/bundle install:
   cmd.run:
-    - cmd: /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/bundle install
     - cwd: /srv/kibana
     - runas: rvm
     - require:
-      - cmd: gem_install_bundler
+      - cmd: /usr/local/rvm/rubies/ruby-1.9.3@kibana/bin/gem install bundler
 
 # edit KibanaConfig.rb to find Elasticsearch
 
