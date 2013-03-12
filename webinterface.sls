@@ -89,13 +89,14 @@ ruby-2.0.0:
 {#    - unless: test -x /usr/local/rvm/rubies/default/bin/gem#}
 # I don't yet have a good way of detecting if bundler has been installed.
 
-{#/usr/local/rvm/rubies/default/bin/bundler install:#}
-{#  cmd.run:#}
-{#    - cwd: /srv/kibana#}
-{#    - runas: rvm#}
-{#    - require:#}
-{#      - git: https://github.com/rashidkpc/Kibana.git#}
-{#      - cmd: /usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler:#}
+/usr/local/rvm/bin/rvm ruby-2.0.0 do bundle install:
+  cmd.run:
+    - cwd: /srv/kibana
+    - runas: rvm
+    - require:
+      - git: https://github.com/rashidkpc/Kibana.git
+      - cmd: /usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler
+{#    - unless: ???#}
 
 kibana:
   group.present:
