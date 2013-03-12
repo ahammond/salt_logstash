@@ -86,7 +86,7 @@ rvm ruby-2.0.0 do gem install bundler:
   cmd.run:
     - runas: rvm
     - require:
-      - cmd: \curl -#L https://get.rvm.io | bash -s stable --ruby
+      - rvm: ruby-2.0.0
 {#    - unless: test -x /usr/local/rvm/rubies/default/bin/gem#}
 # I don't yet have a good way of detecting if bundler has been installed.
 
