@@ -53,8 +53,9 @@ https://github.com/rashidkpc/Kibana.git:
 {#      - ruby#}
 
 ruby-2.0.0:
-  rvm.installed:
-    - require:
+  rvm:
+    - installed
+{#    - require:#}
 {#      - pkg: rvm-deps#}
 {#      - pkg: mri-deps#}
 
