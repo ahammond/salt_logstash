@@ -25,38 +25,38 @@ rvm-deps:
       - git-core
       - subversion
 
-{#mri-deps:#}
-{#  pkg.installed:#}
-{#    - names:#}
-{#      - build-essential#}
-{#      - openssl#}
-{#      - libreadline6#}
-{#      - libreadline6-dev#}
-{#      - curl#}
-{#      - git-core#}
-{#      - zlib1g#}
-{#      - zlib1g-dev#}
-{#      - libssl-dev#}
-{#      - libyaml-dev#}
-{#      - libsqlite3-0#}
-{#      - libsqlite3-dev#}
-{#      - sqlite3#}
-{#      - libxml2-dev#}
-{#      - libxslt1-dev#}
-{#      - autoconf#}
-{#      - libc6-dev#}
-{#      - libncurses5-dev#}
-{#      - automake#}
-{#      - libtool#}
-{#      - bison#}
-{#      - subversion#}
-{#      - ruby#}
+mri-deps:
+  pkg.installed:
+    - names:
+      - build-essential
+      - openssl
+      - libreadline6
+      - libreadline6-dev
+      - curl
+      - git-core
+      - zlib1g
+      - zlib1g-dev
+      - libssl-dev
+      - libyaml-dev
+      - libsqlite3-0
+      - libsqlite3-dev
+      - sqlite3
+      - libxml2-dev
+      - libxslt1-dev
+      - autoconf
+      - libc6-dev
+      - libncurses5-dev
+      - automake
+      - libtool
+      - bison
+      - subversion
+      - ruby
 
 ruby-2.0.0:
   rvm.installed
     - require:
       - pkg: rvm-deps
-{#      - pkg: mri-deps#}
+      - pkg: mri-deps
 
 /usr/local/rvm:
   file.directory:
