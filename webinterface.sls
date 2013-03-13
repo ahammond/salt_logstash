@@ -12,19 +12,19 @@ https://github.com/rashidkpc/Kibana.git:
       - pkg: git
 
 {#Commented out for performance / visibility during development.#}
-{#rvm-deps:#}
-{#  pkg.installed:#}
-{#    - names:#}
-{#      - bash#}
-{#      - coreutils#}
-{#      - gzip#}
-{#      - bzip2#}
-{#      - gawk#}
-{#      - sed#}
-{#      - curl#}
-{#      - git-core#}
-{#      - subversion#}
-{##}
+rvm-deps:
+  pkg.installed:
+    - names:
+      - bash
+      - coreutils
+      - gzip
+      - bzip2
+      - gawk
+      - sed
+      - curl
+      - git-core
+      - subversion
+
 {#mri-deps:#}
 {#  pkg.installed:#}
 {#    - names:#}
@@ -53,10 +53,9 @@ https://github.com/rashidkpc/Kibana.git:
 {#      - ruby#}
 
 ruby-2.0.0:
-  rvm:
-    - installed
-{#    - require:#}
-{#      - pkg: rvm-deps#}
+  rvm.installed
+    - require:
+      - pkg: rvm-deps
 {#      - pkg: mri-deps#}
 
 /usr/local/rvm:
