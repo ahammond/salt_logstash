@@ -99,7 +99,7 @@ kibana:
   group.present:
     - system: True
   user.present:
-    - gid: kibana
+    - gid_from_name: True
     - system: True
     - require:
       - group: kibana
