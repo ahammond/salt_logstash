@@ -99,9 +99,11 @@ kibana:
   group.present:
     - system: True
   user.present:
+    - home: /srv/kibana
     - gid_from_name: True
     - system: True
     - require:
       - group: kibana
+      - git: https://github.com/rashidkpc/Kibana.git
 
 # run ruby kibana.rb
