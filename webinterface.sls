@@ -121,5 +121,3 @@ kibana:
       - git: https://github.com/rashidkpc/Kibana.git
     - watch:
       - file: /srv/kibana/KibanaConfig.rb
-
-# run ruby kibana.rb
