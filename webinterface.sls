@@ -82,13 +82,13 @@ ruby-2.0.0:
 /srv/kibana/KibanaConfig.rb:
   # Bind to the default port.
   # We'll probably want to remove this once we put nginx in front of this.
-  file.sed
+  file.sed:
     - before: '127.0.0.1'
     - after:  '0.0.0.0'
     - limit: '^  KibanaHost = '
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
-  file.sed
+  file.sed:
     - before: 'localhost:9200'
     - after: 'lselasticsearch01:9200'
     - limit: '^  Elasticsearch = '
