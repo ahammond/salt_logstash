@@ -31,7 +31,7 @@ https://github.com/rashidkpc/Kibana.git:
       - pkg: git
       - user: rvm
 
-Commented out for performance / visibility during development.
+{#Commented out for performance / visibility during development.#}
 rvm-deps:
   pkg.installed:
     - names:
