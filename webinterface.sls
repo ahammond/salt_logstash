@@ -58,6 +58,12 @@ ruby-2.0.0:
 {#      - pkg: rvm-deps#}
 {#      - pkg: mri-deps#}
 
+/usr/local/rvm:
+  file.directory:
+    - mode: 2775
+    - require:
+      - rvm: ruby-2.0.0
+
 /usr/local/rvm/bin/rvm ruby-2.0.0 do gem install bundler:
   cmd.run:
     - require:
