@@ -8,7 +8,7 @@ extend:
       - source: salt://logstash/logstash_shipper.conf.jinja
       - user: root
       - group: adm
-      - mode: 640
+      - mode: 644
       - template: jinja
       - require:
         - pkg: logstash
