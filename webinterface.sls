@@ -95,7 +95,7 @@ ruby-2.0.0:
     - runas: rvm
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
-      - cmd: /usr/local/rvm/bin/gem-ruby-1.9.3-p392 install bundler
+      - cmd: /usr/local/rvm/bin/rvm ruby-2.0.0 do gem install bundler
 {#    - unless: ???#}
 
 kibana:
