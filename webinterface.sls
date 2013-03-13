@@ -81,16 +81,12 @@ mri-deps:
     - unless: ls -d /usr/local/rvm/gems/{{  ruby }}*/gems/bundler* > /dev/null
 
 /srv/kibana/KibanaConfig.rb:
-  # Bind to the default port.
-  # We'll probably want to remove this once we put nginx in front of this.
-  file.comment:
-    - regex: '^  KibanaHost = 127'
-    - require:
-      - git: https://github.com/rashidkpc/Kibana.git
-  file.sed:
-    - before: 'localhost:9200'
-    - after: 'lselasticsearch01:9200'
-    - limit: '^  Elasticsearch = '
+  file.managed:
+    - source: salt://logstash/KibanaConfig.rb.sls
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
 
