@@ -79,7 +79,7 @@ ruby-2.0.0:
       - cmd: /usr/local/rvm/bin/rvm ruby-2.0.0 do gem install bundler
 {#    - unless: ???#}
 
-/srv/kibana/KibanaConfig.rb
+/srv/kibana/KibanaConfig.rb:
   # Bind to the default port.
   # We'll probably want to remove this once we put nginx in front of this.
   file.sed
