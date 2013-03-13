@@ -112,5 +112,14 @@ kibana:
     - require:
       - group: kibana
       - git: https://github.com/rashidkpc/Kibana.git
+  service.running:
+    - enable: True
+    - reload: True
+    - require:
+      - file: /etc/init/kibana.conf
+      - cmd: /usr/local/rvm/bin/rvm {{ ruby }} do bundle install
+      - git: https://github.com/rashidkpc/Kibana.git
+    - watch:
+      - file: /srv/kibana/KibanaConfig.rb
 
 # run ruby kibana.rb
