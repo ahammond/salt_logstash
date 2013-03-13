@@ -113,6 +113,8 @@ kibana:
     - home: /srv/kibana
     - gid_from_name: True
     - system: True
+    - groups:
+      - rvm
     - require:
       - group: kibana
       - git: https://github.com/rashidkpc/Kibana.git
