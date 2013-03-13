@@ -2,6 +2,10 @@ openjdk-7-jre:
   pkg.latest:
     - refresh: True
 
+/var/log/logstash:
+  file.directory:
+    - group: adm
+
 logstash:
   pkgrepo.managed:
     - name: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
@@ -26,6 +30,8 @@ logstash:
   service.running:
     - enable: True
     - reload: True
+    - require:
+      - file: /var/log/logstash
     - watch:
       - file: /etc/logstash/conf.d/*
       - pkg: logstash
