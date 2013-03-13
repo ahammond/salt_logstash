@@ -53,7 +53,7 @@ mri-deps:
       - ruby
 
 ruby-2.0.0:
-  rvm.installed
+  rvm.installed:
     - require:
       - pkg: rvm-deps
       - pkg: mri-deps
