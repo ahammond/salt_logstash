@@ -52,7 +52,7 @@ mri-deps:
       - subversion
       - ruby
 
-ruby-2.0.0:
+ruby-1.9.3:
   rvm.installed:
     - require:
       - pkg: rvm-deps
@@ -62,21 +62,21 @@ ruby-2.0.0:
   file.directory:
     - mode: 2775
     - require:
-      - rvm: ruby-2.0.0
+      - rvm: ruby-1.9.3
 
-/usr/local/rvm/bin/rvm ruby-2.0.0 do gem install bundler:
+/usr/local/rvm/bin/rvm ruby-1.9.3 do gem install bundler:
   cmd.run:
     - require:
-      - rvm: ruby-2.0.0
+      - rvm: ruby-1.9.3
 {#    - unless: test -x /usr/local/rvm/rubies/default/bin/gem#}
 # I don't yet have a good way of detecting if bundler has been installed.
 
-/usr/local/rvm/bin/rvm ruby-2.0.0 do bundle install:
+/usr/local/rvm/bin/rvm ruby-1.9.3 do bundle install:
   cmd.run:
     - cwd: /srv/kibana
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
-      - cmd: /usr/local/rvm/bin/rvm ruby-2.0.0 do gem install bundler
+      - cmd: /usr/local/rvm/bin/rvm ruby-1.9.3 do gem install bundler
 {#    - unless: ???#}
 
 /srv/kibana/KibanaConfig.rb:
