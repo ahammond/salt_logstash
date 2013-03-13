@@ -1,8 +1,6 @@
 # So... we want Kibana, because it's "AWESOME" as opposed to just pretty good.
 
-{# It would be _really_ nice to not have to define ruby and still be able to write
- super efficient unless checks. #}
-{%  set ruby='ruby=1.9.3-p392' -%}
+{%  set ruby='ruby=1.9.3' -%}
 
 git:
   pkg:
@@ -71,7 +69,7 @@ mri-deps:
   cmd.run:
     - require:
       - rvm: {{ ruby }}
-    - unless: test -x /usr/local/rvm/rubies/{{ ruby }}
+    - unless: ls -d /usr/local/rvm/rubies/{{ ruby }}* > /dev/null
 # I don't yet have a good way of detecting if bundler has been installed.
 
 /usr/local/rvm/bin/rvm {{ ruby }} do bundle install:
@@ -80,7 +78,7 @@ mri-deps:
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
       - cmd: /usr/local/rvm/bin/rvm {{ ruby }} do gem install bundler
-    - unless: ls /usr/local/rvm/gems/{{  ruby }}/gems/ | grep -q bundle > /dev/null
+    - unless: ls -d /usr/local/rvm/gems/{{  ruby }}*/gems/bundler* > /dev/null
 
 /srv/kibana/KibanaConfig.rb:
   # Bind to the default port.
