@@ -1,6 +1,6 @@
 # So... we want Kibana, because it's "AWESOME" as opposed to just pretty good.
 
-{%  set ruby='ruby-1.9.3' -%}z
+{%  set ruby='ruby-1.9.3' -%}
 
 git:
   pkg:
