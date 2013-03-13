@@ -1,5 +1,9 @@
 # So... we want Kibana, because it's "AWESOME" as opposed to just pretty good.
 
+{# It would be _really_ nice to not have to define ruby and still be able to write
+ super efficient unless checks. #}
+{%  set ruby='ruby=1.9.3-p392' -%}
+
 git:
   pkg:
     - installed
@@ -11,7 +15,6 @@ https://github.com/rashidkpc/Kibana.git:
     - require:
       - pkg: git
 
-{#Commented out for performance / visibility during development.#}
 rvm-deps:
   pkg.installed:
     - names:
@@ -52,7 +55,7 @@ mri-deps:
       - subversion
       - ruby
 
-ruby-1.9.3:
+{{ ruby }}:
   rvm.installed:
     - require:
       - pkg: rvm-deps
@@ -62,22 +65,22 @@ ruby-1.9.3:
   file.directory:
     - mode: 2775
     - require:
-      - rvm: ruby-1.9.3
+      - rvm: {{ ruby }}
 
-/usr/local/rvm/bin/rvm ruby-1.9.3 do gem install bundler:
+/usr/local/rvm/bin/rvm {{ ruby }} do gem install bundler:
   cmd.run:
     - require:
-      - rvm: ruby-1.9.3
-{#    - unless: test -x /usr/local/rvm/rubies/default/bin/gem#}
+      - rvm: {{ ruby }}
+    - unless: test -x /usr/local/rvm/rubies/{{ ruby }}
 # I don't yet have a good way of detecting if bundler has been installed.
 
-/usr/local/rvm/bin/rvm ruby-1.9.3 do bundle install:
+/usr/local/rvm/bin/rvm {{ ruby }} do bundle install:
   cmd.run:
     - cwd: /srv/kibana
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
-      - cmd: /usr/local/rvm/bin/rvm ruby-1.9.3 do gem install bundler
-{#    - unless: ???#}
+      - cmd: /usr/local/rvm/bin/rvm {{ ruby }} do gem install bundler
+    - unless: ls /usr/local/rvm/gems/{{  ruby }}/gems/ | grep -q bundle > /dev/null
 
 /srv/kibana/KibanaConfig.rb:
   # Bind to the default port.
