@@ -96,6 +96,16 @@ mri-deps:
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
 
+/etc/init/kibana.conf:
+  file.managed:
+    - source: salt://logstash/kibana.conf.sls
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - defaults:
+      ruby: {{ ruby }}
+
 kibana:
   group.present:
     - system: True
