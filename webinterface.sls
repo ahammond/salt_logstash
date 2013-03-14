@@ -81,7 +81,7 @@ mri-deps:
 
 /srv/kibana/KibanaConfig.rb:
   file.managed:
-    - source: salt://logstash/KibanaConfig.rb.sls
+    - source: salt://logstash/files/srv/kibana/KibanaConfig.rb.sls
     - user: root
     - group: root
     - mode: 644
