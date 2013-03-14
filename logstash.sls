@@ -22,8 +22,7 @@ logstash:
       - pkg: openjdk-7-jre
   user.present:
     - system: True
-    - home: /srv/logstash
-    - shell: /usr/sbin/nologin
+    - gid_from_name: True
     - password: '*'
   group.present:
     - system: True
