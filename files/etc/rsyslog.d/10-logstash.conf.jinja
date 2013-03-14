@@ -7,14 +7,15 @@ Even if they're not being sent through syslog.
 http://www.rsyslog.com/doc/imfile.html
 NOTE: This is stupid. Fix stuff to instead log through syslog.
 -#}
-{%  for filename, args in pillar['rsyslog'].iteritems() %}
+{% for filename, args in pillar['rsyslog'].iteritems() -%}
+{% if '/dev/null' != filename -%}
 $InputFileName {{  filename }}
-{%  if 'tag' in args %}
+{%  if 'tag' in args -%}
 $InputFileTag {{ args['tag'] }}:
-{% endif %}
-{%  if 'severity' in args %}
+{% endif -%}
+{% if 'severity' in args -%}
 $InputFileSeverity {{  args['severity'] }}
-{%  endif %}
+{% endif -%}
 {#
 This filename must be unique for the box or "interesting" things may happen.
 So... this is pretty fragile, but... it's a start.
@@ -22,7 +23,8 @@ Can we instead use an re to handle all kinds of clever characters?
 -#}
 $InputFileStateFile state-ls{{ filename.replace('/', '-') }}
 $InputRunFileMonitor
-{%  endfor %}
+{% endif -%}
+{% endfor -%}
 {# This should obviously be dynamic... but. Let's get started with lsshipper01 -#}
 # Send everything to a logstash server named 'lsshipper01' on port 5544:
 *.* @@ls-shipper01:5544
