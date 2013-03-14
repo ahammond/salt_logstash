@@ -7,7 +7,7 @@ rsyslog:
 
   file.managed:
     - name: /etc/rsyslog.d/00-logstash.conf
-    - source: salt://logstash/rsyslog_logstash.conf.jinja
+    - source: salt://logstash/files/etc/rsyslog.d/00-logstash.conf.jinja
     - user: root
     - group: root
     - mode: 644
