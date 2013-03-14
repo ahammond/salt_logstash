@@ -69,8 +69,7 @@ mri-deps:
   cmd.run:
     - require:
       - rvm: {{ ruby }}
-    - unless: ls -d /usr/local/rvm/rubies/{{ ruby }}* > /dev/null
-# I don't yet have a good way of detecting if bundler has been installed.
+    - unless: ls -d /usr/local/rvm/gems/{{ ruby }}*/gems/bundler* > /dev/null
 
 /usr/local/rvm/bin/rvm {{ ruby }} do bundle install:
   cmd.run:
@@ -78,7 +77,7 @@ mri-deps:
     - require:
       - git: https://github.com/rashidkpc/Kibana.git
       - cmd: /usr/local/rvm/bin/rvm {{ ruby }} do gem install bundler
-    - unless: ls -d /usr/local/rvm/gems/{{  ruby }}*/gems/bundler* > /dev/null
+# I don't yet have a good way of detecting if bundle has been installed.
 
 /srv/kibana/KibanaConfig.rb:
   file.managed:
