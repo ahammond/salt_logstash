@@ -13,7 +13,7 @@ redis-server:
       - pkgrepo: deb http://ppa.launchpad.net/rwky/redis/ubuntu precise main
   file.managed:
     - name: /etc/redis/redis.conf
-    - source: salt://logstash/redis.conf.jinja
+    - source: salt://logstash/files/etc/redis/redis.conf.jinja
     - template: jinja
     - defaults:
       bind: 0.0.0.0
