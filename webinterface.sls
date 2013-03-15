@@ -91,7 +91,7 @@ mri-deps:
 
 /etc/init/kibana.conf:
   file.managed:
-    - source: salt://logstash/kibana.conf.sls
+    - source: salt://logstash/files/etc/init/kibana.conf.sls
     - user: root
     - group: root
     - mode: 644
