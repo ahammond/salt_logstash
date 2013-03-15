@@ -4,7 +4,6 @@ rsyslog:
     - reload: True
     - watch:
       - file: /etc/rsyslog.d/*
-      - file: /etc/hosts
 
   file.managed:
     - name: /etc/rsyslog.d/00-logstash.conf
