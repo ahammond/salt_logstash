@@ -4,7 +4,7 @@
 
 # Heap Size (defaults to 256m min, 1g max)
 # Let's try system memory - 50m for the OS and everything else?
-ES_HEAP_SIZE=450m
+ES_HEAP_SIZE={{ grains['mem_total'] - 50 }}m
 
 # Heap new generation
 #ES_HEAP_NEWSIZE=
