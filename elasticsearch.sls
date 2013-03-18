@@ -2,6 +2,11 @@ openjdk-7-jre:
   pkg.latest:
     - refresh: True
 
+/etc/default/elasticsearch:
+  file.managed:
+    - source: salt://files/etc/default/elasticsearch.sls
+    - template: jinja
+
 elasticsearch:
   pkg.installed:
     - sources:
@@ -9,10 +14,19 @@ elasticsearch:
     - refresh: True
     - require:
       - pkg: openjdk-7-jre
+      - file: /etc/default/elasticsearch
   service.running:
     - enable: True
     - reload: True
     - watch:
+      - pkg: elasticsearch
+      - file: /etc/elasticsearch/elasticsearch.yml
+      - file: /etc/default/elasticsearch
+
+/etc/elasticsearch/elasticsearch.yml:
+  file.managed:
+    - source: salt://files/etc/elasticsearch/elasticsearch.yml
+    - require:
       - pkg: elasticsearch
 
 # support for elasticsearch monitoring via paramedic:
