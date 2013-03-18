@@ -17,7 +17,6 @@ elasticsearch:
       - file: /etc/default/elasticsearch
   service.running:
     - enable: True
-    - reload: True
     - watch:
       - pkg: elasticsearch
       - file: /etc/elasticsearch/elasticsearch.yml
