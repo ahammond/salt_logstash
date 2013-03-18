@@ -4,7 +4,7 @@ openjdk-7-jre:
 
 /etc/default/elasticsearch:
   file.managed:
-    - source: salt://files/etc/default/elasticsearch.sls
+    - source: salt://logstash/files/etc/default/elasticsearch.sls
     - template: jinja
 
 elasticsearch:
@@ -25,7 +25,7 @@ elasticsearch:
 
 /etc/elasticsearch/elasticsearch.yml:
   file.managed:
-    - source: salt://files/etc/elasticsearch/elasticsearch.yml
+    - source: salt://logstash/files/etc/elasticsearch/elasticsearch.yml
     - require:
       - pkg: elasticsearch
 
@@ -33,4 +33,4 @@ elasticsearch:
 # http://166.78.143.218:9200/_plugin/paramedic/index.html
 /usr/share/elasticsearch/bin/plugin -install karmi/elasticsearch-paramedic:
   cmd.run:
-    - unless: text -x /usr/share/elasticsearch/plugins/paramedic
+    - unless: test -x /usr/share/elasticsearch/plugins/paramedic
