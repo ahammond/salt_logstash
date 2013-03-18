@@ -11,6 +11,13 @@ redis-server:
     - refresh: True
     - require:
       - pkgrepo: deb http://ppa.launchpad.net/rwky/redis/ubuntu precise main
+  file.directory:
+    - name: /var/log/redis
+    - user: redis
+    - group: adm
+    - mode: 2750
+    - require:
+      - pkg: redis-server
   file.managed:
     - name: /etc/redis/redis.conf
     - source: salt://logstash/files/etc/redis/redis.conf.jinja
@@ -27,6 +34,7 @@ redis-server:
     - require:
       - pkg: redis-server
       - sysctl: vm.overcommit_memory
+      - file: /var/log/redis
     - watch:
       - file: /etc/redis/redis.conf
 
