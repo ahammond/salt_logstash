@@ -3,8 +3,9 @@
 #ES_GROUP=elasticsearch
 
 # Heap Size (defaults to 256m min, 1g max)
-# Let's try system memory - 50m for the OS and everything else?
-ES_HEAP_SIZE={{ grains['mem_total'] - 50 }}m
+# Per http://www.elasticsearch.org/tutorials/2012/05/19/elasticsearch-for-logging.html
+# Rule of thumb is allocate half the total memory to ES.
+ES_HEAP_SIZE={{ (grains['mem_total'] / 2) | int }}m
 
 # Heap new generation
 #ES_HEAP_NEWSIZE=
