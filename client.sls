@@ -5,9 +5,10 @@ rsyslog:
     - watch:
       - file: /etc/rsyslog.d/*
 
+{% set config = '/etc/rsyslog.d/00-logstash.conf' %}
+{{ config }}
   file.managed:
-    - name: /etc/rsyslog.d/00-logstash.conf
-    - source: salt://logstash/files/etc/rsyslog.d/00-logstash.conf.jinja
+    - source: salt://logstash/files{{ config }}.jinja
     - user: root
     - group: root
     - mode: 644
