@@ -13,3 +13,6 @@ rsyslog:
     - group: root
     - mode: 644
     - template: jinja
+
+/etc/rsyslog.d/50-default.conf
+  file.absent
