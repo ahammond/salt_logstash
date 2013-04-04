@@ -8,7 +8,7 @@ rsyslog:
 {% set config = '/etc/rsyslog.d/00-logstash.conf' %}
 {{ config }}
   file.managed:
-    - source: salt://logstash/files{{ config }}.jinja
+    - source: salt://logstash/files{{ config }}
     - user: root
     - group: root
     - mode: 644
