@@ -6,7 +6,7 @@ rsyslog:
       - file: /etc/rsyslog.d/*
 
 {% set config = '/etc/rsyslog.d/00-logstash.conf' %}
-{{ config }}
+{{ config }}:
   file.managed:
     - source: salt://logstash/files{{ config }}
     - user: root
