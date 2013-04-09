@@ -6,19 +6,15 @@ openjdk-7-jre:
   file.directory:
     - group: adm
 
-logstash:
+logstash_ppa:
   pkgrepo.managed:
-    - name: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
-    - dist: precise
-    - file: /etc/apt/sources.list.d/logstash.list
-    - keyid: 28B04E4A
-    - keyserver: keyserver.ubuntu.com
-    - require_in:
-      - pkg: logstash
+    - ppa: wolfnet/logstash
+
+logstash:
   pkg.latest:
     - refresh: True
     - require:
-      - pkgrepo: deb http://ppa.launchpad.net/wolfnet/logstash/ubuntu precise main
+      - pkgrepo: logstash_ppa
       - pkg: openjdk-7-jre
   user.present:
     - system: True
