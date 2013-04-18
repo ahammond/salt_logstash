@@ -5,6 +5,11 @@ input {
     type => syslog
     port => 5544
   }
+  log4j {
+    type => "log4j"
+    port => {{ log4j_port }}
+    debug => true
+  }
 }
 
 output {

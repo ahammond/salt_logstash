@@ -10,5 +10,7 @@ extend:
       - group: adm
       - mode: 644
       - template: jinja
+      - default:
+        log4j_port: 4712
       - require:
         - pkg: logstash
