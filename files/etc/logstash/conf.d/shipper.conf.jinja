@@ -12,6 +12,21 @@ input {
   }
 }
 
+filter {
+  grep {
+    type => "syslog"
+    match => [ "@message", "ovpn-client" ]
+    add_tag => "ovpn-client"
+  }
+  multiline {
+    tags => "ovpn-client"
+    type => "syslog"
+    pattern => "(CRITICAL|WARNING|NOTICE|INFO|DEBUG)"
+    negate => true
+    what => "previous"
+  }
+}
+
 output {
  redis {
     host => "ls-broker01"
