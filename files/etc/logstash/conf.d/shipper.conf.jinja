@@ -41,6 +41,7 @@ filter {
     remove => [ "syslog_hostname", "syslog_message", "syslog_timestamp" ]
   }
 
+  # ovpn-client noise reduction
   grep {
     type => "syslog"
     match => [ "@message", "ovpn-client" ]
@@ -54,6 +55,24 @@ filter {
     negate => true
     what => "previous"
   }
+
+  # log4j noise reduction
+  # http://blog.monitis.com/index.php/2012/08/07/monitor-your-java-application-logs-in-4-easy-steps/
+  # covers this a little bit.
+  multiline {
+    type => "log4j"
+    pattern => "^\\s"
+    what => "previous"
+  }
+  mutate {
+    type => "log4j"
+    add_field => [ "log4j_ip", "%{@source_host}" ]
+  }
+  mutate {
+    type => "log4j"
+    gsub => [ "log4j_ip", ":.*$", "" ]
+  }
+
 }
 
 output {
