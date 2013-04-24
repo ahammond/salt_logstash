@@ -45,6 +45,7 @@ filter {
     type => "syslog"
     match => [ "@message", "ovpn-client" ]
     add_tag => "ovpn-client"
+    drop => false
   }
   multiline {
     tags => "ovpn-client"
