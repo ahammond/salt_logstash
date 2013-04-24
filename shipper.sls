@@ -12,5 +12,6 @@ extend:
       - template: jinja
       - default:
         log4j_port: 4712
+      - broker_host: ls-broker01
       - require:
         - pkg: logstash
