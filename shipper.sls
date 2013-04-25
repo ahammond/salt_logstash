@@ -23,4 +23,4 @@ extend('logstash')\
         'template'='jinja',
         'default'=shipper_defaults,
         'broker_host'=broker_host)\
-    .require('pkg': 'logstash')
+    .require('pkg'='logstash')
