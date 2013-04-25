@@ -13,7 +13,7 @@ for k, v in __salt__['publish.publish']('*', 'grains.item', 'roles', 'glob', TIM
 
 include('logstash.logstash')
 
-extend('logstash')\
+extend(state('logstash')\
     .file.managed(
         'name'=shipper_conf,
         'source'='salt://logstash/files{}'.format(shipper_conf),
@@ -24,3 +24,4 @@ extend('logstash')\
         'default'=shipper_defaults,
         'broker_host'=broker_host)\
     .require('pkg'='logstash')
+)
