@@ -13,6 +13,6 @@ extend:
       - template: jinja
       - default:
         log4j_port: 4712
-      - broker_host: ls-broker01
+      - broker_host: {{ salt['publish.publish']('role:logstash.broker', 'grains.item', 'id', 'grain') }}
       - require:
         - pkg: logstash
