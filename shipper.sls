@@ -1,11 +1,12 @@
 include:
   - logstash.logstash
 
+{% set shipper_conf = '/etc/logstash/conf.d/shipper.conf' %}
 extend:
   logstash:
     file.managed:
-      - name: /etc/logstash/conf.d/syslog.conf
-      - source: salt://logstash/files/etc/logstash/conf.d/shipper.conf.jinja
+      - name: {{ shipper_ conf }}
+      - source: {{ 'salt://logstash/files{}'.format(shipper_conf) }}
       - user: root
       - group: adm
       - mode: 644
