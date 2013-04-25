@@ -1,18 +1,24 @@
-rsyslog:
-  service.running:
-    - enable: True
-    - reload: True
-    - watch:
-      - file: /etc/rsyslog.d/*
+#!pydsl
 
-{% set config = '/etc/rsyslog.d/00-logstash.conf' %}
-{{ config }}:
-  file.managed:
-    - source: salt://logstash/files{{ config }}
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
+import random
 
-/etc/rsyslog.d/50-default.conf:
-  file.absent
+shipper_hosts = __salt__['publish.publish']('role:logstash.broker', 'grains.item', 'id', 'grain')
+shipper_host = random.choice(shipper_hosts.iterkeys())
+
+state('rsyslog')\
+    .service.running(
+        enable=True,
+        reload=True)\
+    .watch(file='/etc/rsyslog.d/*')
+
+config = '/etc/rsyslog.d/00-logstash.conf'
+state(config)\
+    .file.managed(
+        source='salt://logstash/files{}'.format(config),
+        user='root',
+        group='root',
+        mode='644',
+        template='jinja',
+        shipper_host=shipper_host)
+
+state('/etc/rsyslog.d/50-default.conf').file.absent()
