@@ -86,9 +86,8 @@ state(rvm_base)\
 
 bundler_install = '{0}/bin/rvm {1} do gem install bundler'.format(rvm_base, ruby)
 state(bundler_install)\
-    .cmd.run()\
-    .require(rvm=ruby)\
-    .unless('ls -d {0}/gems/{1}*/gems/bundler* > /dev/null'.format(rvm_base, ruby))
+    .cmd.run(unless='ls -d {0}/gems/{1}*/gems/bundler* > /dev/null'.format(rvm_base, ruby))\
+    .require(rvm=ruby)
 
 bundle_install = '{0}/bin/rvm {1} do bundle install'.format(rvm_base, ruby)
 state(bundle_install)\
