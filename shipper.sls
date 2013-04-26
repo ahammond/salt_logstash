@@ -7,12 +7,11 @@ extend:
     file.managed:
       - name: {{ shipper_ conf }}
       - source: {{ 'salt://logstash/files{}'.format(shipper_conf) }}
-      - user: root
       - group: adm
-      - mode: 644
       - template: jinja
       - default:
         log4j_port: 4712
+        syslog_port: 5544   {# note this is the port rsyslog clients should forward to #}
       - broker_host: {{ salt['publish.publish']('role:logstash.broker', 'grains.item', 'id', 'grain') }}
       - require:
         - pkg: logstash
