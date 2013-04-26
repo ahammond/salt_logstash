@@ -9,6 +9,19 @@ kibana_group = 'kibana'
 kibana_user = 'kibana'
 rvm_base = '/usr/local/rvm'
 
+# Find elasticsearch hosts
+es_hosts = __salt__['publish.publish']('role:logstash.elasticsearch', 'grains.item', 'id', 'grain', TIMEOUT).keys()
+
+es_string = ','.join(['"{}:9200"'.format(x) for x in es_hosts])
+
+if len(es_hosts) > 1:
+    elasticsearch_hosts = '[{}]'.format(es_string)
+elif len(es_hosts) == 1:
+    elasticsearch_hosts = es_string
+else:
+    raise ValueError("Can't configure kibana until at least one logstash.elasticsearch instance is deployed")
+
+
 rvm_packages = [
     'bash',
     'coreutils',
@@ -87,7 +100,8 @@ kibana_config = '{}/KibanaConfig.rb'.format(deploy_directory)
 state(kibana_config)\
     .file.managed(
         source='salt://logstash/files{}'.format(kibana_config),
-        template='jinja')\
+        template='jinja',
+        elasticsearch_hosts=elasticsearch_hosts)\
     .require(git=github)
 
 kibana_init_defaults = {
