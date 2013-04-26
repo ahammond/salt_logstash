@@ -116,7 +116,7 @@ state(kibana_init)\
 
 state('kibana_group')\
     .group.present(
-        name=kibana_group
+        name=kibana_group,
         system=True)
 
 state('kibana_user')\
