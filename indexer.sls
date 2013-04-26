@@ -7,9 +7,7 @@ extend:
     file.managed:
       - name: {{ indexer_conf }}
       - source: {{ 'salt://logstash/files{}'.format(indexer_conf) }}
-      - user: root
       - group: adm
-      - mode: 644
       - template: jinja
       - require:
         - pkg: logstash
