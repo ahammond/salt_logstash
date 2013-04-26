@@ -1,6 +1,8 @@
 #!pydsl
 # So... we want Kibana, because it's "AWESOME" as opposed to just pretty good.
 
+TIMEOUT = 5
+
 ruby = 'ruby-1.9.3'
 github = 'https://github.com/rashidkpc/Kibana.git'
 github_revision='v0.2.0'
