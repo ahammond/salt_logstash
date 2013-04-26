@@ -1,122 +1,128 @@
+#!pydsl
 # So... we want Kibana, because it's "AWESOME" as opposed to just pretty good.
 
-{%  set ruby='ruby-1.9.3' -%}
+ruby = 'ruby-1.9.3'
+github = 'https://github.com/rashidkpc/Kibana.git'
+github_revision='v0.2.0'
+deploy_directory='/srv/kibana'
+kibana_group = 'kibana'
+kibana_user = 'kibana'
+rvm_base = '/usr/local/rvm'
 
-git:
-  pkg:
-    - installed
+rvm_packages = [
+    'bash',
+    'coreutils',
+    'gzip',
+    'bzip2',
+    'gawk',
+    'sed',
+    'curl',
+    'git-core',
+    'subversion',
+]
 
-https://github.com/rashidkpc/Kibana.git:
-  git.latest:
-    - rev: v0.2.0
-    - target: /srv/kibana
-    - require:
-      - pkg: git
+mri_packages = [
+    'build-essential',
+    'openssl',
+    'libreadline6',
+    'libreadline6-dev',
+    'curl',
+    'git-core',
+    'zlib1g',
+    'zlib1g-dev',
+    'libssl-dev',
+    'libyaml-dev',
+    'libsqlite3-0',
+    'libsqlite3-dev',
+    'sqlite3',
+    'libxml2-dev',
+    'libxslt1-dev',
+    'autoconf',
+    'libc6-dev',
+    'libncurses5-dev',
+    'automake',
+    'libtool',
+    'bison',
+    'subversion',
+    'ruby',
+]
 
-rvm-deps:
-  pkg.installed:
-    - names:
-      - bash
-      - coreutils
-      - gzip
-      - bzip2
-      - gawk
-      - sed
-      - curl
-      - git-core
-      - subversion
+state('rvm-deps').pkg.installed(names=rvm_packages)
+state('mri-deps')
+    .pkg.installed(names=mri_packages)\
+    .require(pkg='rvm-deps')
 
-mri-deps:
-  pkg.installed:
-    - names:
-      - build-essential
-      - openssl
-      - libreadline6
-      - libreadline6-dev
-      - curl
-      - git-core
-      - zlib1g
-      - zlib1g-dev
-      - libssl-dev
-      - libyaml-dev
-      - libsqlite3-0
-      - libsqlite3-dev
-      - sqlite3
-      - libxml2-dev
-      - libxslt1-dev
-      - autoconf
-      - libc6-dev
-      - libncurses5-dev
-      - automake
-      - libtool
-      - bison
-      - subversion
-      - ruby
+state('git').pkg.installed()
 
-{{ ruby }}:
-  rvm.installed:
-    - require:
-      - pkg: rvm-deps
-      - pkg: mri-deps
+state(github)\
+    .git.latest(
+          rev=github_revision,
+          target=deploy_directory)\
+    .require(pkg='git')
 
-/usr/local/rvm:
-  file.directory:
-    - mode: 2775
-    - require:
-      - rvm: {{ ruby }}
 
-/usr/local/rvm/bin/rvm {{ ruby }} do gem install bundler:
-  cmd.run:
-    - require:
-      - rvm: {{ ruby }}
-    - unless: ls -d /usr/local/rvm/gems/{{ ruby }}*/gems/bundler* > /dev/null
+state(ruby)\
+    .rvm.installed()\
+    .require(pkg='mri-deps')
 
-/usr/local/rvm/bin/rvm {{ ruby }} do bundle install:
-  cmd.run:
-    - cwd: /srv/kibana
-    - require:
-      - git: https://github.com/rashidkpc/Kibana.git
-      - cmd: /usr/local/rvm/bin/rvm {{ ruby }} do gem install bundler
+state(rvm_base)\
+    .file.directory(mode='2775')\
+    .require(rvm=ruby)
+
+bundler_install = '{0}/bin/rvm {1} do gem install bundler'.format(rvm_base, ruby)
+state(bundler_install)\
+    .cmd.run()\
+    .require(rvm=ruby)\
+    .unless('ls -d {0}/gems/{1}*/gems/bundler* > /dev/null'.format(rvm_base, ruby))
+
+bundle_install = '{0}/bin/rvm {1} do bundle install'.format(rvm_base, ruby)
+state(bundle_install)\
+    .cmd.run(cwd=deploy_directory)\
+    .require(
+        git=github,
+        cmd=bundler_install)
 # I don't yet have a good way of detecting if bundle has been installed.
 
-/srv/kibana/KibanaConfig.rb:
-  file.managed:
-    - source: salt://logstash/files/srv/kibana/KibanaConfig.rb.sls
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - require:
-      - git: https://github.com/rashidkpc/Kibana.git
+kibana_config = '{}/KibanaConfig.rb'.format(deploy_directory)
+state(kibana_config)\
+    .file.managed(
+        source='salt://logstash/files{}'.format(kibana_config),
+        template='jinja')\
+    .require(git=github)
 
-/etc/init/kibana.conf:
-  file.managed:
-    - source: salt://logstash/files/etc/init/kibana.conf.sls
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - defaults:
-      ruby: {{ ruby }}
+kibana_init_defaults = {
+    'ruby': ruby,
+}
+kibana_init='/etc/init/kibana.conf'
+state(kibana_init)\
+    .file.managed(
+        source='salt://logstash/files{}'.format(kibana_init),
+        template='jinja',
+        defaults=kibana_init_defaults)
 
-kibana:
-  group.present:
-    - system: True
-  user.present:
-    - home: /srv/kibana
-    - gid_from_name: True
-    - system: True
-    - groups:
-      - rvm
-    - require:
-      - group: kibana
-      - git: https://github.com/rashidkpc/Kibana.git
-  service.running:
-    - enable: True
-    - reload: True
-    - require:
-      - file: /etc/init/kibana.conf
-      - cmd: /usr/local/rvm/bin/rvm {{ ruby }} do bundle install
-      - git: https://github.com/rashidkpc/Kibana.git
-    - watch:
-      - file: /srv/kibana/KibanaConfig.rb
+state('kibana_group')\
+    .group.present(
+        name=kibana_group
+        system=True)
+
+state('kibana_user')\
+    .user.present(
+        name=kibana_name,
+        home=deploy_directory,
+        gid_from_name=True,
+        system=True,
+        groups=['rvm',])\
+    .require(
+        group='kibana_group',
+        git=github)
+
+state('kibana_service')\
+    .service.running(
+        name='kibana',
+        enable=True,
+        reload=True)\
+    .require(
+        file=kibana_init,
+        cmd=bundle_install,
+        git=github)\
+    .watch(file=kibana_config)
