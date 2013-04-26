@@ -5,7 +5,7 @@ include:
 extend:
   logstash:
     file.managed:
-      - name: {{ shipper_ conf }}
+      - name: {{ shipper_conf }}
       - source: {{ 'salt://logstash/files{}'.format(shipper_conf) }}
       - group: adm
       - template: jinja
