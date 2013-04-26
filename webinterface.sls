@@ -61,7 +61,7 @@ mri_packages = [
 ]
 
 state('rvm-deps').pkg.installed(names=rvm_packages)
-state('mri-deps')
+state('mri-deps')\
     .pkg.installed(names=mri_packages)\
     .require(pkg='rvm-deps')
 
