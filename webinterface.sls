@@ -122,7 +122,7 @@ state('kibana_group')\
 
 state('kibana_user')\
     .user.present(
-        name=kibana_name,
+        name=kibana_user,
         home=deploy_directory,
         gid_from_name=True,
         system=True,
