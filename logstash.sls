@@ -25,10 +25,9 @@
 
 {% set logstash_init = '/etc/init/logstash.conf' %}
 {{ logstash_init }}:
-  file.sed:
-    - before: logstash.jar
-    - after: /opt/logstash/logstash-1.1.12-flatjar.jar
-    - limit: ^exec
+  file.managed:
+    - source: salt://logstash/files{{ logstash_init }}
+    - template: jinja
     - require:
       - pkg: logstash
 
