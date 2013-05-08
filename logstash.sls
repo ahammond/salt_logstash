@@ -11,6 +11,12 @@
     - group: adm
     - mode: '2750'
 
+# so... logstash's linking for libzmq is a bit odd
+{% set zmq_link = '/usr/lib/x86_64-linux-gnu/libzmq.so' %}
+{{ zmq_link }}:
+  file.symlink:
+    - target: libzmq.so.3
+
 logstash:
   pkg.installed:
     - sources:
@@ -26,6 +32,7 @@ logstash:
   service.running:
     - enable: True
     - require:
+      - file: {{ zmq_link }}
       - file: {{ logstash_log_dir }}
     - watch:
       - file: /etc/logstash/conf.d/*
