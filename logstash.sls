@@ -17,6 +17,21 @@
   file.symlink:
     - target: libzmq.so.3
 
+{% set broken_old_initd = '/etc/init.d/logstash' %}
+{{ broken_old_initd }}:
+  file.absent:
+    - require:
+      - pkg: logstash
+
+{% set logstash_init = '/etc/init/logstash.conf' %}
+{{ logstash_init }}:
+  file.sed:
+    - before: logstash.jar
+    - after: /opt/logstash/logstash-1.1.12-flatjar.jar
+    - limit: ^exec
+    - require:
+      - pkg: logstash
+
 logstash:
   pkg.installed:
     - sources:
@@ -32,6 +47,8 @@ logstash:
   service.running:
     - enable: True
     - require:
+      - file: {{ logstash_init }}
+      - file: {{ broken_old_initd }}
       - file: {{ zmq_link }}
       - file: {{ logstash_log_dir }}
     - watch:
