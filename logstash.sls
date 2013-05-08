@@ -1,21 +1,22 @@
-openjdk-7-jre:
-  pkg.latest:
-    - refresh: True
 
-/var/log/logstash:
+{% set logstash_deb_url = 'http://logstash.objects.dreamhost.com/pkg/ubuntu/logstash_1.1.12-1-ubuntu_all.deb' %}
+{% set jre = 'openjdk-7-jre' %}
+
+{{ jre }}:
+  pkg.installed
+
+{% set logstash_log_dir = '/var/log/logstash' %}
+{{ logstash_log_dir }}:
   file.directory:
     - group: adm
-
-logstash_ppa:
-  pkgrepo.managed:
-    - ppa: wolfnet/logstash
+    - mode: '2750'
 
 logstash:
-  pkg.latest:
-    - refresh: True
+  pkg.installed:
+    - sources:
+      - logstash: {{ logstash_deb_url }}
     - require:
-      - pkgrepo: logstash_ppa
-      - pkg: openjdk-7-jre
+      - pkg: {{ jre }}
   user.present:
     - system: True
     - gid_from_name: True
@@ -24,9 +25,8 @@ logstash:
     - system: True
   service.running:
     - enable: True
-    - reload: True
     - require:
-      - file: /var/log/logstash
+      - file: {{ logstash_log_dir }}
     - watch:
       - file: /etc/logstash/conf.d/*
       - pkg: logstash
