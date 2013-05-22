@@ -28,6 +28,18 @@ elasticsearch:
     - require:
       - pkg: elasticsearch
 
+curl:
+  pkg.installed
+
+# Nightly optimize command.
+curl -XPOST http://localhost:9200/logstash-$(date -d '1 day ago' +'%Y.%m.%d')/_optimize:
+  cron.present:
+    - user: elasticsearch
+    - minute: 7
+    - hour: 0
+    - require:
+      - pkg: curl
+
 # support for elasticsearch monitoring via paramedic:
 # http://166.78.143.218:9200/_plugin/paramedic/index.html
 /usr/share/elasticsearch/bin/plugin -install karmi/elasticsearch-paramedic:
