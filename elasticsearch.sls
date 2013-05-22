@@ -32,7 +32,7 @@ curl:
   pkg.installed
 
 # Nightly optimize command.
-curl -XPOST http://localhost:9200/logstash-$(date -d '1 day ago' +'%Y.%m.%d')/_optimize:
+/usr/bin/curl -XPOST http://localhost:9200/logstash-$(date -d '1 day ago' +'%Y.%m.%d')/_optimize:
   cron.present:
     - user: elasticsearch
     - minute: 7
