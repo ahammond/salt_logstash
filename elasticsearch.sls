@@ -28,6 +28,40 @@ elasticsearch:
     - require:
       - pkg: elasticsearch
 
+# Support for auto-pruning the indices
+git:
+  pkg.installed
+
+basic_python_packages:
+  pkg.installed:
+    - pkgs:
+      - python-pip
+      - python-virtualenv
+
+{% set prune_repo = 'https://github.com/ahammond/prune_logstash_elasticsearch.git' %}
+{% set prune_dir = '/srv/prune_logstash_elasticsearch' %}
+{% set prune_virtualenv = '{0}_virtualenv'.format(prune_dir) %}
+{{ prune_repo }}:
+  git.latest:
+    - rev: master
+    - target: {{ prune_dir }}
+    - require:
+      - pkg: git
+
+{{ prune_virtualenv }}:
+  virtualenv.managed:
+    - requirements: {{ prune_dir }}/requirements.txt
+    - require:
+      - pkg: basic_python_packages
+      - git: {{ prune_repo }}
+
+{{ prune_virtualenv }}/bin/python {{ prune_dir }}/prune_logstash_elasticsearch.py:
+  cron.present:
+    - user: elasticsearch
+    - minute: 57
+    - require:
+      - virtualenv: {{ prune_virtualenv }}
+
 curl:
   pkg.installed
 
