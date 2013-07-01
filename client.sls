@@ -21,4 +21,9 @@ state(config)\
         template='jinja',
         shipper_host=shipper_host)
 
-state('/etc/rsyslog.d/50-default.conf').file.absent()
+log_to_disk_config = '/etc/rsyslog.d/50-default.conf'
+if __grains__.get('log_to_disk', True):         # By default, log to disk.
+    state(log_to_disk_config).file.managed(
+            source='salt://logstash/files{}'.format(log_to_disk_config))
+else:
+    state(log_to_disk_config).file.absent()
