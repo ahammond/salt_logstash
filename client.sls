@@ -2,9 +2,6 @@
 
 import random
 
-shipper_hosts = __salt__['publish.publish']('role:logstash.shipper', 'grains.item', 'id', 'grain').keys()
-shipper_host = random.choice(shipper_hosts)
-
 state('rsyslog')\
     .service.running(
         enable=True,
@@ -13,6 +10,8 @@ state('rsyslog')\
 
 config = '/etc/rsyslog.d/00-logstash.conf'
 if __grains__.get('log_to_logstash', False):  # By default, not to Logstash
+    shipper_hosts = __salt__['publish.publish']('role:logstash.shipper', 'grains.item', 'id', 'grain').keys()
+    shipper_host = random.choice(shipper_hosts)
     state(config)\
         .file.managed(
             source='salt://logstash/files{}'.format(config),
